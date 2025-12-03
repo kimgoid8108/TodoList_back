@@ -3,6 +3,13 @@ import { disconnectDatabase } from "./config/database.js";
 
 const PORT = process.env.PORT || 3000;
 
+// 환경 변수 로깅
+console.log("🔧 Environment Variables:");
+console.log("  PORT:", PORT);
+console.log("  NODE_ENV:", process.env.NODE_ENV);
+console.log("  FRONTEND_URL:", process.env.FRONTEND_URL);
+console.log("  DATABASE_URL:", process.env.DATABASE_URL ? "✅ Set" : "❌ Not set");
+
 const server = app.listen(PORT, () => {
   console.log(`🚀 Server is running on http://localhost:${PORT}`);
   console.log(`📊 Health check: http://localhost:${PORT}/health`);
