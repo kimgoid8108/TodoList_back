@@ -11,10 +11,25 @@ import {
 const app = express();
 
 // Middleware
-// CORS 설정 - Render 배포 시 프론트엔드 URL 허용
+// CORS 설정 - Vercel 프론트엔드 URL 허용
+const allowedOrigins = [
+  "https://cicd-todolist.vercel.app",
+  process.env.FRONTEND_URL,
+].filter(Boolean); // undefined 제거
+
 app.use(
   cors({
-    origin: process.env.FRONTEND_URL || "*", // 프로덕션에서는 프론트엔드 URL로 변경
+    origin: (origin, callback) => {
+      // 개발 환경 또는 origin이 없으면 허용 (Postman 등)
+      if (!origin || process.env.NODE_ENV === "development") {
+        return callback(null, true);
+      }
+      // 허용된 origin인지 확인
+      if (allowedOrigins.includes(origin) || process.env.FRONTEND_URL === "*") {
+        return callback(null, true);
+      }
+      callback(new Error("CORS policy violation"));
+    },
     credentials: true,
   })
 );
