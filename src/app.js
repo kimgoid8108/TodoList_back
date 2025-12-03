@@ -11,7 +11,13 @@ import {
 const app = express();
 
 // Middleware
-app.use(cors());
+// CORS 설정 - Render 배포 시 프론트엔드 URL 허용
+app.use(
+  cors({
+    origin: process.env.FRONTEND_URL || "*", // 프로덕션에서는 프론트엔드 URL로 변경
+    credentials: true,
+  })
+);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
